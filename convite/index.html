@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-XaSeziQhxIMtbBhlHQdk5zMKEWGfr1m5YhhfV6+1xy4='; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Convite do Requiem</title>
+  <style>
+    :root { color-scheme: dark; --bg: #1b1d1d; --panel: #232626; --text: #e9e7df; --muted: #a39f95; --accent: #c7b38d; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--text); font: 16px/1.5 "Segoe UI", system-ui, sans-serif; }
+    main { width: min(440px, calc(100vw - 32px)); padding: 28px; border: 1px solid #3a3d3a; border-radius: 16px; background: var(--panel); text-align: center; }
+    h1 { margin: 0 0 6px; font: 700 26px Georgia, serif; }
+    p { margin: 0 0 18px; color: var(--muted); }
+    a.button { display: block; margin: 10px 0; padding: 12px; border-radius: 10px; background: var(--accent); color: #1b1d1d; font-weight: 700; text-decoration: none; }
+    a.secondary { background: transparent; color: var(--text); border: 1px solid #4a4d4a; }
+    small { color: var(--muted); }
+    [hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Requiem</h1>
+    <p id="what">Você recebeu um convite.</p>
+    <div id="valid" hidden>
+      <a class="button" id="open" href="#">Abrir no Requiem</a>
+      <p><small>O Requiem mostra o servidor ou a sala antes de você entrar. Nada acontece sem o seu clique.</small></p>
+    </div>
+    <p id="invalid" hidden>Este link de convite está incompleto. Peça um novo a quem convidou você.</p>
+    <a class="button secondary" href="https://github.com/AdryanPSantos/requiem-releases/releases/latest">Ainda não tenho o Requiem: baixar</a>
+    <p><small>Depois de instalar, volte e toque em "Abrir no Requiem".</small></p>
+  </main>
+  <script>
+    // The invite code travels after "#", so it never reaches this site's server. Only the exact shape is accepted.
+    var match = /^#(servidor|sala)\/([0-9A-Fa-f]{32})$/.exec(location.hash);
+    if (match) {
+      var link = 'requiem://convite/' + match[1] + '/' + match[2].toUpperCase();
+      document.getElementById('open').href = link;
+      document.getElementById('what').textContent = match[1] === 'sala' ? 'Você foi convidado para uma sala.' : 'Você foi convidado para um servidor.';
+      document.getElementById('valid').hidden = false;
+    } else {
+      document.getElementById('invalid').hidden = false;
+    }
+  </script>
+</body>
+</html>
